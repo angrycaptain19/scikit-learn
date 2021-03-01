@@ -20,26 +20,22 @@ class KMeansBenchmark(Predictor, Transformer, Estimator, Benchmark):
         representation, algorithm, init = params
 
         if representation == 'sparse':
-            data = _20newsgroups_highdim_dataset(n_samples=8000)
+            return _20newsgroups_highdim_dataset(n_samples=8000)
         else:
-            data = _blobs_dataset(n_clusters=20)
-
-        return data
+            return _blobs_dataset(n_clusters=20)
 
     def make_estimator(self, params):
         representation, algorithm, init = params
 
         max_iter = 30 if representation == 'sparse' else 100
 
-        estimator = KMeans(n_clusters=20,
+        return KMeans(n_clusters=20,
                            algorithm=algorithm,
                            init=init,
                            n_init=1,
                            max_iter=max_iter,
                            tol=-1,
                            random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         self.train_scorer = (
@@ -67,18 +63,16 @@ class MiniBatchKMeansBenchmark(Predictor, Transformer, Estimator, Benchmark):
         representation, init = params
 
         if representation == 'sparse':
-            data = _20newsgroups_highdim_dataset()
+            return _20newsgroups_highdim_dataset()
         else:
-            data = _blobs_dataset(n_clusters=20)
-
-        return data
+            return _blobs_dataset(n_clusters=20)
 
     def make_estimator(self, params):
         representation, init = params
 
         max_iter = 5 if representation == 'sparse' else 2
 
-        estimator = MiniBatchKMeans(n_clusters=20,
+        return MiniBatchKMeans(n_clusters=20,
                                     init=init,
                                     n_init=1,
                                     max_iter=max_iter,
@@ -86,8 +80,6 @@ class MiniBatchKMeansBenchmark(Predictor, Transformer, Estimator, Benchmark):
                                     max_no_improvement=None,
                                     compute_labels=False,
                                     random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         self.train_scorer = (

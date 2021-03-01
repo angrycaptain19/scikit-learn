@@ -194,8 +194,7 @@ def corrected_std(differences, n_train, n_test):
     corrected_var = (
         np.var(differences, ddof=1) * ((1 / n) + (n_test / n_train))
     )
-    corrected_std = np.sqrt(corrected_var)
-    return corrected_std
+    return np.sqrt(corrected_var)
 
 
 def compute_corrected_ttest(differences, df, n_train, n_test):

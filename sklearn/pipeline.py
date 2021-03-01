@@ -190,9 +190,11 @@ class Pipeline(_BaseComposition):
             stop -= 1
 
         for idx, (name, trans) in enumerate(islice(self.steps, 0, stop)):
-            if not filter_passthrough:
-                yield idx, name, trans
-            elif trans is not None and trans != 'passthrough':
+            if (
+                not filter_passthrough
+                or trans is not None
+                and trans != 'passthrough'
+            ):
                 yield idx, name, trans
 
     def __len__(self):
@@ -899,7 +901,7 @@ class FeatureUnion(TransformerMixin, _BaseComposition):
         if not self.transformer_weights:
             return
 
-        transformer_names = set(name for name, _ in self.transformer_list)
+        transformer_names = {name for name, _ in self.transformer_list}
         for name in self.transformer_weights:
             if name not in transformer_names:
                 raise ValueError(

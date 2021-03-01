@@ -41,14 +41,12 @@ class LogisticRegressionBenchmark(Predictor, Estimator, Benchmark):
 
         penalty = 'l2' if solver == 'lbfgs' else 'l1'
 
-        estimator = LogisticRegression(solver=solver,
+        return LogisticRegression(solver=solver,
                                        penalty=penalty,
                                        multi_class='multinomial',
                                        tol=0.01,
                                        n_jobs=n_jobs,
                                        random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_classif_scorers(self)
@@ -70,22 +68,18 @@ class RidgeBenchmark(Predictor, Estimator, Benchmark):
         representation, solver = params
 
         if representation == 'dense':
-            data = _synth_regression_dataset(n_samples=500000, n_features=100)
+            return _synth_regression_dataset(n_samples=500000, n_features=100)
         else:
-            data = _synth_regression_sparse_dataset(n_samples=100000,
+            return _synth_regression_sparse_dataset(n_samples=100000,
                                                     n_features=10000,
                                                     density=0.005)
-
-        return data
 
     def make_estimator(self, params):
         representation, solver = params
 
-        estimator = Ridge(solver=solver,
+        return Ridge(solver=solver,
                           fit_intercept=False,
                           random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_reg_scorers(self)
@@ -93,9 +87,7 @@ class RidgeBenchmark(Predictor, Estimator, Benchmark):
     def skip(self, params):
         representation, solver = params
 
-        if representation == 'sparse' and solver == 'svd':
-            return True
-        return False
+        return representation == 'sparse' and solver == 'svd'
 
 
 class LinearRegressionBenchmark(Predictor, Estimator, Benchmark):
@@ -113,18 +105,14 @@ class LinearRegressionBenchmark(Predictor, Estimator, Benchmark):
         representation, = params
 
         if representation == 'dense':
-            data = _synth_regression_dataset(n_samples=1000000, n_features=100)
+            return _synth_regression_dataset(n_samples=1000000, n_features=100)
         else:
-            data = _synth_regression_sparse_dataset(n_samples=10000,
+            return _synth_regression_sparse_dataset(n_samples=10000,
                                                     n_features=100000,
                                                     density=0.01)
 
-        return data
-
     def make_estimator(self, params):
-        estimator = LinearRegression()
-
-        return estimator
+        return LinearRegression()
 
     def make_scorers(self):
         make_gen_reg_scorers(self)
@@ -145,20 +133,16 @@ class SGDRegressorBenchmark(Predictor, Estimator, Benchmark):
         representation, = params
 
         if representation == 'dense':
-            data = _synth_regression_dataset(n_samples=100000, n_features=200)
+            return _synth_regression_dataset(n_samples=100000, n_features=200)
         else:
-            data = _synth_regression_sparse_dataset(n_samples=100000,
+            return _synth_regression_sparse_dataset(n_samples=100000,
                                                     n_features=1000,
                                                     density=0.01)
 
-        return data
-
     def make_estimator(self, params):
-        estimator = SGDRegressor(max_iter=1000,
+        return SGDRegressor(max_iter=1000,
                                  tol=1e-16,
                                  random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_reg_scorers(self)
@@ -179,22 +163,18 @@ class ElasticNetBenchmark(Predictor, Estimator, Benchmark):
         representation, precompute = params
 
         if representation == 'dense':
-            data = _synth_regression_dataset(n_samples=1000000, n_features=100)
+            return _synth_regression_dataset(n_samples=1000000, n_features=100)
         else:
-            data = _synth_regression_sparse_dataset(n_samples=50000,
+            return _synth_regression_sparse_dataset(n_samples=50000,
                                                     n_features=5000,
                                                     density=0.01)
-
-        return data
 
     def make_estimator(self, params):
         representation, precompute = params
 
-        estimator = ElasticNet(precompute=precompute,
+        return ElasticNet(precompute=precompute,
                                alpha=0.001,
                                random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_reg_scorers(self)
@@ -202,9 +182,7 @@ class ElasticNetBenchmark(Predictor, Estimator, Benchmark):
     def skip(self, params):
         representation, precompute = params
 
-        if representation == 'sparse' and precompute is False:
-            return True
-        return False
+        return representation == 'sparse' and precompute is False
 
 
 class LassoBenchmark(Predictor, Estimator, Benchmark):
@@ -222,22 +200,18 @@ class LassoBenchmark(Predictor, Estimator, Benchmark):
         representation, precompute = params
 
         if representation == 'dense':
-            data = _synth_regression_dataset(n_samples=1000000, n_features=100)
+            return _synth_regression_dataset(n_samples=1000000, n_features=100)
         else:
-            data = _synth_regression_sparse_dataset(n_samples=50000,
+            return _synth_regression_sparse_dataset(n_samples=50000,
                                                     n_features=5000,
                                                     density=0.01)
-
-        return data
 
     def make_estimator(self, params):
         representation, precompute = params
 
-        estimator = Lasso(precompute=precompute,
+        return Lasso(precompute=precompute,
                           alpha=0.001,
                           random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_reg_scorers(self)
@@ -245,6 +219,4 @@ class LassoBenchmark(Predictor, Estimator, Benchmark):
     def skip(self, params):
         representation, precompute = params
 
-        if representation == 'sparse' and precompute is False:
-            return True
-        return False
+        return representation == 'sparse' and precompute is False

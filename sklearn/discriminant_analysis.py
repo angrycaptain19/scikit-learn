@@ -72,7 +72,7 @@ def _cov(X, shrinkage=None, covariance_estimator=None):
                 s = empirical_covariance(X)
             else:
                 raise ValueError('unknown shrinkage parameter')
-        elif isinstance(shrinkage, float) or isinstance(shrinkage, int):
+        elif isinstance(shrinkage, (float, int)):
             if shrinkage < 0 or shrinkage > 1:
                 raise ValueError('shrinkage parameter must be between 0 and 1')
             s = shrunk_covariance(empirical_covariance(X), shrinkage)
@@ -609,11 +609,11 @@ class LinearDiscriminantAnalysis(LinearClassifierMixin,
         check_is_fitted(self)
 
         decision = self.decision_function(X)
-        if self.classes_.size == 2:
-            proba = expit(decision)
-            return np.vstack([1-proba, proba]).T
-        else:
+        if self.classes_.size != 2:
             return softmax(decision)
+
+        proba = expit(decision)
+        return np.vstack([1-proba, proba]).T
 
     def predict_log_proba(self, X):
         """Estimate log probability.
@@ -875,8 +875,7 @@ class QuadraticDiscriminantAnalysis(ClassifierMixin, BaseEstimator):
         C : ndarray of shape (n_samples,)
         """
         d = self._decision_function(X)
-        y_pred = self.classes_.take(d.argmax(1))
-        return y_pred
+        return self.classes_.take(d.argmax(1))
 
     def predict_proba(self, X):
         """Return posterior probabilities of classification.

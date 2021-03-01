@@ -26,17 +26,13 @@ class KNeighborsClassifierBenchmark(Predictor, Estimator, Benchmark):
         else:
             n_components = 10 if dimension == 'low' else 50
 
-        data = _20newsgroups_lowdim_dataset(n_components=n_components)
-
-        return data
+        return _20newsgroups_lowdim_dataset(n_components=n_components)
 
     def make_estimator(self, params):
         algorithm, dimension, n_jobs = params
 
-        estimator = KNeighborsClassifier(algorithm=algorithm,
+        return KNeighborsClassifier(algorithm=algorithm,
                                          n_jobs=n_jobs)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_classif_scorers(self)

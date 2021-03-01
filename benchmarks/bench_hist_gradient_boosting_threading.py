@@ -309,8 +309,8 @@ if args.plot or args.plot_filename:
 
     plt.tight_layout()
 
-    if args.plot_filename:
-        plt.savefig(args.plot_filename)
+if args.plot_filename:
+    plt.savefig(args.plot_filename)
 
-    if args.plot:
-        plt.show()
+if args.plot:
+    plt.show()

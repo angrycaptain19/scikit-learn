@@ -25,24 +25,20 @@ class RandomForestClassifierBenchmark(Predictor, Estimator, Benchmark):
         representation, n_jobs = params
 
         if representation == 'sparse':
-            data = _20newsgroups_highdim_dataset()
+            return _20newsgroups_highdim_dataset()
         else:
-            data = _20newsgroups_lowdim_dataset()
-
-        return data
+            return _20newsgroups_lowdim_dataset()
 
     def make_estimator(self, params):
         representation, n_jobs = params
 
         n_estimators = 500 if Benchmark.data_size == 'large' else 100
 
-        estimator = RandomForestClassifier(n_estimators=n_estimators,
+        return RandomForestClassifier(n_estimators=n_estimators,
                                            min_samples_split=10,
                                            max_features='log2',
                                            n_jobs=n_jobs,
                                            random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_classif_scorers(self)
@@ -63,23 +59,19 @@ class GradientBoostingClassifierBenchmark(Predictor, Estimator, Benchmark):
         representation, = params
 
         if representation == 'sparse':
-            data = _20newsgroups_highdim_dataset()
+            return _20newsgroups_highdim_dataset()
         else:
-            data = _20newsgroups_lowdim_dataset()
-
-        return data
+            return _20newsgroups_lowdim_dataset()
 
     def make_estimator(self, params):
         representation, = params
 
         n_estimators = 100 if Benchmark.data_size == 'large' else 10
 
-        estimator = GradientBoostingClassifier(n_estimators=n_estimators,
+        return GradientBoostingClassifier(n_estimators=n_estimators,
                                                max_features='log2',
                                                subsample=0.5,
                                                random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_classif_scorers(self)
@@ -97,19 +89,15 @@ class HistGradientBoostingClassifierBenchmark(Predictor, Estimator, Benchmark):
         super().setup_cache()
 
     def make_data(self, params):
-        data = _synth_classification_dataset(n_samples=10000,
+        return _synth_classification_dataset(n_samples=10000,
                                              n_features=100,
                                              n_classes=5)
 
-        return data
-
     def make_estimator(self, params):
-        estimator = HistGradientBoostingClassifier(max_iter=100,
+        return HistGradientBoostingClassifier(max_iter=100,
                                                    max_leaf_nodes=15,
                                                    early_stopping=False,
                                                    random_state=0)
-
-        return estimator
 
     def make_scorers(self):
         make_gen_classif_scorers(self)

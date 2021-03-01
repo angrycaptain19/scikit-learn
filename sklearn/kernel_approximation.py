@@ -189,9 +189,7 @@ class PolynomialCountSketch(BaseEstimator, TransformerMixin):
         # multiplication (via FFT) of p count sketches of x.
         count_sketches_fft = fft(count_sketches, axis=2, overwrite_x=True)
         count_sketches_fft_prod = np.prod(count_sketches_fft, axis=1)
-        data_sketch = np.real(ifft(count_sketches_fft_prod, overwrite_x=True))
-
-        return data_sketch
+        return np.real(ifft(count_sketches_fft_prod, overwrite_x=True))
 
 
 class RBFSampler(TransformerMixin, BaseEstimator):
